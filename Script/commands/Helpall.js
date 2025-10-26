@@ -26,17 +26,17 @@ module.exports.run = async function ({ api, event }) {
 
  allCommands.sort();
 
- const finalText = `╔═══❖ 🌟 𝐂𝐎𝐌𝐌𝐀𝐍𝐃 𝐋𝐈𝐒𝐓 🌟 ❖═══╗
+ const finalText = `╔═❖𝐂𝐎𝐌𝐌𝐀𝐍𝐃 𝐋𝐈𝐒𝐓❖═╗
 ${allCommands.map(cmd => `║ ➔ ${cmd}`).join("\n")}
-╠═════🔰 𝐁𝐎𝐓 𝐈𝐍𝐅𝐎 🔰═════╣
+╠═══🔰 𝐁𝐎𝐓 𝐈𝐍𝐅𝐎 🔰═══╣
 ║ 🤖 𝐁𝐨𝐭: ─꯭─⃝‌‌𝐒𝐡𝐚𝐦𝐢𝐦 𝐂𝐡𝐚𝐭 𝐁𝐨𝐭
 ║ 👑 𝐎𝐰𝐧𝐞𝐫: 𝐒𝐡𝐚𝐦𝐢𝐦
 ║ 📦 𝐂𝐨𝐦𝐦𝐚𝐧𝐝𝐬: ${allCommands.length} 
-╚═══════════════════════╝`;
+╚═══════════════════╝`;
 
  
  const backgrounds = [
- "https://i.imgur.com/wu0iDqS.jpeg"
+ "https://i.imgur.com/sxSn1K3.jpeg"
  ];
  const selectedBg = backgrounds[Math.floor(Math.random() * backgrounds.length)];
  const imgPath = __dirname + "/cache/helpallbg.jpg";
