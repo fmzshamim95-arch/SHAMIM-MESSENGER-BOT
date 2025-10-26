@@ -31,7 +31,7 @@ module.exports.handleEvent = async ({ event, api, Threads }) => {
   if (triggerWords.includes(lowerBody)) {
     return api.sendMessage(
 `👑━━━━━━━━━━━━━━━👑
-『 𝐏𝐑𝐄𝐅𝐈𝐗 𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐓𝐈𝐎𝐍 』
+『𝐏𝐑𝐄𝐅𝐈𝐗 𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐓𝐈𝐎𝐍』
 🔰━━━━━━━━━━━━━━━🔰
 『 𝐁𝐎𝐓 𝐈𝐍𝐅𝐎 』
 
