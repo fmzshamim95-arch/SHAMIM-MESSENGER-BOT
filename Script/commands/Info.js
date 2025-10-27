@@ -64,10 +64,6 @@ module.exports.run = async function ({ api, event, args, Users, Threads }) {
 ❤️ 𝗧𝗵𝗮𝗻𝗸𝘀 𝗳𝗼𝗿 𝘂𝘀𝗶𝗻𝗴 🌺
  😍─꯭─⃝‌‌𝐒𝐡𝐚𝐦𝐢𝐦 𝐂𝐡𝐚𝐭 𝐁𝐨𝐭😘`;
 
- const imgLinks = [
- "https://imgur.com/a/r0wxd5Z.png"
- ];
-
  const imgLink = imgLinks[Math.floor(Math.random() * imgLinks.length)];
 
  const callback = () => {
