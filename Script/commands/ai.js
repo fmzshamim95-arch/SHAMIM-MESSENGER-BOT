@@ -3,86 +3,94 @@ const axios = require("axios");
 module.exports = {
   config: {
     name: "ai",
-    version: "1.0.2",
+    version: "1.0.3",
     credits: "CYBER-BOT-TEAM",
-    description: "google ai",
+    description: "google ai debug-ready",
     cooldowns: 0,
     hasPermission: 0,
-    commandCategory: "google",
-    usages: {
-      en: "{pn} message | photo reply"
-    }
+    commandCategory: "google"
   },
 
   run: async ({ api, args, event }) => {
     const input = args.join(" ").trim();
-
-    // base64 থেকে ডিকোড — এটি একটি base URL হওয়া উচিত যার শেষে ?q= অথবা কাস্টম param না থাকলে আমরা params ব্যবহার করবো
     const encodedApi = "aHR0cHM6Ly9hcGlzLWtlaXRoLnZlcmNlbC5hcHAvYWkvZGVlcHNlZWtWMz9xPQ==";
     let apiUrl = Buffer.from(encodedApi, "base64").toString("utf-8");
-    // যদি encodedApi শেষে already ?q= থাকে, আমরা baseUrl হিসাবেই ব্যবহার করবো এবং GET/POST এ params যোগ করবো।
-    // উদাহরণ: https://.../ai/deepseekV3?q=
-    // safer way: remove trailing 'q=' so axios params কাজ করবে:
     apiUrl = apiUrl.replace(/q=*$/i, "");
 
-    // helper to send reply (many messenger libs use callback as 3rd arg; keep same signature)
     const send = (msg) => api.sendMessage(msg, event.threadID, event.messageID);
+
+    // EXTRA: log the incoming event shape so we can see where attachments live
+    console.log("=== Incoming messenger event ===");
+    try { console.log(JSON.stringify(event, null, 2)); } catch (e) { console.log(event); }
 
     try {
       if (event.type === "message_reply") {
-        // Ensure we actually have attachments
         const attachments = event.messageReply && event.messageReply.attachments;
+        console.log("attachments:", attachments);
+
         if (!attachments || !attachments.length) {
-          return send("অনুগ্রহ করে একটি ইমেজ রিপ্লাই করো (reply to an image).");
+          // also show messageReply object so you can inspect structure
+          console.log("messageReply object:", event.messageReply);
+          return send("রিপ্লাই করা মেসেজে কোনো অ্যাটাচমেন্ট পাওয়া যায়নি — reply করা মেসেজের পুরো অবজেক্ট কনসোলে দেখো।");
         }
 
-        // find first image attachment with a url
-        const imageAttachment = attachments.find(a => a.url || (a.type && a.type === "image" && a.payload && a.payload.url));
-        const imageUrl = imageAttachment && (imageAttachment.url || (imageAttachment.payload && imageAttachment.payload.url));
+        const imageAttachment = attachments.find(a => a.url || (a.payload && (a.payload.url || a.payload.src)));
+        const imageUrl = imageAttachment && (imageAttachment.url || imageAttachment.payload && (imageAttachment.payload.url || imageAttachment.payload.src));
+
+        console.log("imageAttachment:", imageAttachment);
+        console.log("imageUrl:", imageUrl);
 
         if (!imageUrl) {
-          return send("রিপ্লাই করা মেসেজে কোনো ইমেজ URL পাওয়া যায়নি।");
+          return send("রিপ্লাইতে ইমেজ আছে মনে হচ্ছে, কিন্তু কোন URL পাওয়া যায়নি (check console).");
         }
 
-        // POST request — many endpoints expect JSON with q and image fields.
-        const payload = {
-          q: input || "Describe this image.",
-          image: imageUrl
-        };
+        const payload = { q: input || "Describe this image.", image: imageUrl };
 
-        const res = await axios.post(apiUrl, payload, {
-          headers: { "Content-Type": "application/json" },
-          timeout: 20000
-        });
+        console.log("POST ->", apiUrl, "payload:", payload);
+        const res = await axios.post(apiUrl, payload, { headers: { "Content-Type": "application/json" }, timeout: 20000 });
 
-        const result = res.data?.result || res.data?.response || res.data?.message || JSON.stringify(res.data) || "No response from AI.";
+        console.log("response status:", res.status);
+        console.log("response data:", res.data);
+
+        const result = res.data?.result || res.data?.response || res.data?.message || JSON.stringify(res.data);
         return send(result);
       } else {
-        // Non-reply (text query)
-        if (!input) {
-          return send("Hey I'm Ai Chat Bot\nHow can I assist you today?");
-        }
+        if (!input) return send("Hey I'm Ai Chat Bot\nHow can I assist you today?");
 
-        // GET request with params (cleaner than concatenating encodedURIComponent on URL)
-        const res = await axios.get(apiUrl, {
-          params: { q: input },
-          timeout: 20000
-        });
+        console.log("GET ->", apiUrl, "q=", input);
+        const res = await axios.get(apiUrl, { params: { q: input }, timeout: 20000 });
 
-        const result = res.data?.result || res.data?.response || res.data?.message || JSON.stringify(res.data) || "No response from AI.";
+        console.log("response status:", res.status);
+        console.log("response data:", res.data);
+
+        const result = res.data?.result || res.data?.response || res.data?.message || JSON.stringify(res.data);
         return send(result);
       }
     } catch (err) {
-      // Log full error to console to help debugging (status, body)
-      console.error("AI command error:", {
-        message: err.message,
-        code: err.code,
-        responseStatus: err.response?.status,
-        responseData: err.response?.data
-      });
+      // FULL error logging for console
+      console.error("---------- AI command error (full) ----------");
+      console.error("message:", err.message);
+      if (err.code) console.error("code:", err.code);
+      if (err.config) {
+        console.error("request config:", { url: err.config.url, method: err.config.method, params: err.config.params });
+      }
+      if (err.response) {
+        console.error("response status:", err.response.status);
+        // print a short preview of response.data (avoid extremely large dumps)
+        try {
+          const preview = JSON.stringify(err.response.data).slice(0, 1500);
+          console.error("response data (preview):", preview);
+        } catch (e) { console.error("response data (raw):", err.response.data); }
+      }
+      console.error("---------------------------------------------");
 
-      // user-facing friendly message
-      return send("দেখে নিচ্ছি — কোনো সমস্যা হয়েছে। কনসোলে এরর দেখতে হবে (check console).");
+      // SAFE message to user (avoid leaking sensitive server response)
+      const userMsg = err.response && err.response.data && (err.response.data.message || err.response.data.error)
+        ? `API responded: ${String(err.response.data.message || err.response.data.error).slice(0, 300)}`
+        : `সমস্যা হয়েছে: ${err.message}. (ডিটেইল কনসোলে আছে)`;
+
+      // also tell them to paste the console preview here (but warn: don't paste API keys)
+      send(`${userMsg}\nঅনুগ্রহ করে কনসোলে যা দেখাসে সেটা (err.response.data preview) এখানে পেস্ট করলে আমি বলব ঠিক কী করতে হবে। কিন্তু API কী বা সিক্রেট কখনো পেস্ট করবেন না।`);
     }
   }
 };
