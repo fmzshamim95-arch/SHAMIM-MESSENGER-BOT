@@ -37,7 +37,10 @@ module.exports.run = async function ({ api, event }) {
 ║ wa.me/01827404801 
 ╚═════════════════════ ✿
 `;
-
+const backgrounds = [
+ "https://i.imgur.com/sxSn1K3.jpeg"
+ ];
+  
   const randomImg = images[Math.floor(Math.random() * images.length)];
 
   const callback = () => api.sendMessage(
