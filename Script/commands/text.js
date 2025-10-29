@@ -38,7 +38,7 @@ module.exports.run = async function({ api, event, args }) {
  const text = args.slice(1).join(" ");
 
  if (isNaN(count) || count < 1) {
- return api.sendMessage("কতবার পাঠাতে হবে তা ঠিকমতো দিন✅\nউদাহরণ: /text 5 Sahu", event.threadID, event.messageID);
+ return api.sendMessage("কতবার পাঠাতে হবে তা ঠিকমতো দিন✅\nউদাহরণ: /text 5 Shamim", event.threadID, event.messageID);
  }
 
  if (!text) {
