@@ -36,24 +36,24 @@ Main.refreshListen=Refreshed handleListener...
 Main.successConnectDatabase=Connected to database successfully!
 Main.failConnectDatabase=Failed to connect to database, error: %1
 
-Shahadat specific texts
+Shamim specific texts
 
-shahadat.foundPathAppstate=Found appstate.json path successfully
-shahadat.notFoundPathAppstate=Appstate.json not found or invalid!
-shahadat.errorFormat=Invalid module format detected!
-shahadat.nameExist=Module name already exists in the system!
-shahadat.notFoundLanguage=No language support found for module: %1
-shahadat.notFoundPackage=Required package %1 not found for module %2, installing now...
-shahadat.cantInstallPackage=Failed to install package %1 for module %2. Error: %3
-shahadat.loadedPackage=All dependencies loaded successfully for module %1
-shahadat.loadedConfig=Configuration loaded successfully for module %1
-shahadat.cantOnload=Failed to initialize module %1. Error: %2
-shahadat.successLoadModule=Module %1 loaded successfully
-shahadat.failLoadModule=Failed to load module %1. Error: %2
-shahadat.finishLoadModule=Successfully loaded %1 commands and %2 events
-shahadat.handleListenError=Listener encountered an error: %1
-shahadat.warningSourceCode=WARNING: Source code structure modified unexpectedly!
-shahadat.successConnectDatabase=Database connection established successfully
+Shamim.foundPathAppstate=Found appstate.json path successfully
+Shamim.notFoundPathAppstate=Appstate.json not found or invalid!
+Shamim.errorFormat=Invalid module format detected!
+Shamim.nameExist=Module name already exists in the system!
+Shamim.notFoundLanguage=No language support found for module: %1
+Shamim.notFoundPackage=Required package %1 not found for module %2, installing now...
+Shamim.cantInstallPackage=Failed to install package %1 for module %2. Error: %3
+Shamim.loadedPackage=All dependencies loaded successfully for module %1
+Shamim.loadedConfig=Configuration loaded successfully for module %1
+Shamim.cantOnload=Failed to initialize module %1. Error: %2
+Shamim.successLoadModule=Module %1 loaded successfully
+Shamim.failLoadModule=Failed to load module %1. Error: %2
+Shamim.finishLoadModule=Successfully loaded %1 commands and %2 events
+Shamim.handleListenError=Listener encountered an error: %1
+Shamim.warningSourceCode=WARNING: Source code structure modified unexpectedly!
+Shamim.successConnectDatabase=Database connection established successfully
 
 includes/listen.js
 
@@ -82,7 +82,7 @@ users.needObject=Have to be an Object
 includes/handle/handleCommand.js
 
 handleCommand.userBanned=বক্স এ বেশি আবলামি করার কারণে তুমাকে ব্যান করা হয়েছে..!🚫
-handleCommand.threadBanned=Group Has Been Banned..!⛔️\nPlease Contact Owner SHAHADAT SAHU For Unban ⚠️
+handleCommand.threadBanned=Group Has Been Banned..!⛔️\nPlease Contact Owner SHAMIM For Unban ⚠️
 handleCommand.commandNotExist=Assalamu Alaikum 🌸\n\nOops! The command you entered isn't valid ❌\n\nDid you mean ➤ %1 ?\n\nPlease check and try again 🕊️
 handleCommand.commandThreadBanned=Your thread is unable to use command "%1"
 handleCommand.commandUserBanned=You are unable to use command "%1"
